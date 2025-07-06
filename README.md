@@ -1,200 +1,183 @@
-# Nagmouz 2.0
+# Supabase CLI
 
-A monorepo project containing two applications:
+[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
+](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
 
-- **Nujmooz**: Voice-interactive AI chat assistant
-- **Orbit**: Admin Dashboard
+[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
 
-## 🚀 Features
+This repository contains all the functionality for Supabase CLI.
 
-### Nujmooz
+- [x] Running Supabase locally
+- [x] Managing database migrations
+- [x] Creating and deploying Supabase Functions
+- [x] Generating types directly from your database schema
+- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
 
-- Voice-based interaction with AI assistant
-- Real-time transcription using Whisper
-- Natural responses with ElevenLabs text-to-speech
-- Project brief generation
-- PDF export functionality
-- Trello integration for project management
+## Getting started
 
-### Orbit
+### Install the CLI
 
-- Project management dashboard
-- Client relationship management
-- Brief tracking and management
-- Team feedback system
-- Analytics and reporting
-- Dark mode support
-
-## 🛠️ Tech Stack
-
-- Next.js 14 with App Router
-- TypeScript
-- Tailwind CSS
-- Supabase for:
-  - Authentication
-  - Database
-  - Storage
-  - Real-time subscriptions
-- OpenAI GPT-4 & Whisper
-- ElevenLabs Text-to-Speech
-- Trello API integration
-- PWA support
-
-## 📦 Project Structure
-
-```
-nagmouz-2.0/
-├── apps/
-│   ├── nujmooz/          # Voice assistant app
-│   └── orbit/            # Admin dashboard
-├── packages/
-│   └── ui/              # Shared UI components
-└── supabase/            # Database schema and migrations
-```
-
-## 🔧 Local Development
-
-### Prerequisites
-
-- Node.js 18 or later
-- pnpm 10.12.4 or later
-- Docker (optional, for local database)
-
-### Environment Setup
-
-1. Install dependencies:
+Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
 
 ```bash
-pnpm install
+npm i supabase --save-dev
 ```
 
-2. Set up environment variables:
+To install the beta release channel:
 
 ```bash
-# Copy environment templates
-cp apps/orbit/.env.example apps/orbit/.env.local
-cp apps/nujmooz/.env.example apps/nujmooz/.env.local
+npm i supabase@beta --save-dev
 ```
 
-3. Update the environment variables in each `.env.local` file with your credentials.
+When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
 
-### Development Commands
-
-```bash
-# Start both apps in development mode
-make dev
-
-# Start individual apps
-make orbit-dev    # Start Orbit only
-make nujmooz-dev  # Start Nujmooz only
-
-# Other useful commands
-make clean        # Clean up build files and dependencies
-make rebuild      # Full rebuild of the environment
-make logs         # View application logs
+```
+NODE_OPTIONS=--no-experimental-fetch yarn add supabase
 ```
 
-## 🚀 Deployment
+> **Note**
+For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
 
-### Deploying to Vercel
+<details>
+  <summary><b>macOS</b></summary>
 
-#### Orbit (Admin Dashboard)
+  Available via [Homebrew](https://brew.sh). To install:
 
-1. Create a new project on Vercel
-2. Connect your GitHub repository
-3. Configure build settings:
-   - Framework Preset: Next.js
-   - Root Directory: `apps/orbit`
-   - Build Command: `cd ../.. && pnpm build --filter=orbit...`
-   - Install Command: `cd ../.. && pnpm install`
-   - Output Directory: `.next`
+  ```sh
+  brew install supabase/tap/supabase
+  ```
 
-4. Add environment variables:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL
-   NEXT_PUBLIC_SUPABASE_ANON_KEY
-   SUPABASE_SERVICE_ROLE_KEY
-   TRELLO_KEY
-   TRELLO_TOKEN
-   TRELLO_BOARD_ID
-   TRELLO_LIST_ID
+  To install the beta release channel:
+  
+  ```sh
+  brew install supabase/tap/supabase-beta
+  brew link --overwrite supabase-beta
+  ```
+  
+  To upgrade:
+
+  ```sh
+  brew upgrade supabase
+  ```
+</details>
+
+<details>
+  <summary><b>Windows</b></summary>
+
+  Available via [Scoop](https://scoop.sh). To install:
+
+  ```powershell
+  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+  scoop install supabase
+  ```
+
+  To upgrade:
+
+  ```powershell
+  scoop update supabase
+  ```
+</details>
+
+<details>
+  <summary><b>Linux</b></summary>
+
+  Available via [Homebrew](https://brew.sh) and Linux packages.
+
+  #### via Homebrew
+
+  To install:
+
+  ```sh
+  brew install supabase/tap/supabase
+  ```
+
+  To upgrade:
+
+  ```sh
+  brew upgrade supabase
    ```
 
-#### Nujmooz (Public Assistant)
+  #### via Linux packages
 
-1. Create a new project on Vercel
-2. Connect your GitHub repository
-3. Configure build settings:
-   - Framework Preset: Next.js
-   - Root Directory: `apps/nujmooz`
-   - Build Command: `cd ../.. && pnpm build --filter=nujmooz...`
-   - Install Command: `cd ../.. && pnpm install`
-   - Output Directory: `.next`
+  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
 
-4. Add environment variables:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL
-   NEXT_PUBLIC_SUPABASE_ANON_KEY
-   SUPABASE_SERVICE_ROLE_KEY
-   OPENAI_API_KEY
-   ELEVENLABS_API_KEY
-   ELEVENLABS_VOICE_ID
-   ```
+  ```sh
+  sudo apk add --allow-untrusted <...>.apk
+  ```
 
-### Post-Deployment
+  ```sh
+  sudo dpkg -i <...>.deb
+  ```
 
-1. Configure custom domains in Vercel:
-   - Orbit: `admin.yourdomain.com`
-   - Nujmooz: `app.yourdomain.com`
+  ```sh
+  sudo rpm -i <...>.rpm
+  ```
 
-2. Set up SSL certificates (automatic with Vercel)
+  ```sh
+  sudo pacman -U <...>.pkg.tar.zst
+  ```
+</details>
 
-3. Configure environment variables in Vercel UI
+<details>
+  <summary><b>Other Platforms</b></summary>
 
-## 🔍 Monitoring & Maintenance
+  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
 
-### Error Tracking
+  ```sh
+  go install github.com/supabase/cli@latest
+  ```
 
-- Vercel Analytics enabled
-- Error logging to external service
+  Add a symlink to the binary in `$PATH` for easier access:
 
-### Performance Monitoring
+  ```sh
+  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
+  ```
 
-- Vercel Edge Analytics
-- Real User Monitoring
-- Performance metrics tracking
+  This works on other non-standard Linux distros.
+</details>
 
-### Security
+<details>
+  <summary><b>Community Maintained Packages</b></summary>
 
-- Regular dependency updates
-- Environment variable audits
-- Security scanning
-
-## 📝 Contributing
-
-1. Create a feature branch:
+  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
+  To install in your working directory:
 
 ```bash
-git checkout -b feature/your-feature-name
+  pkgx install supabase
 ```
 
-2. Make your changes and commit:
+  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
+</details>
+
+### Run the CLI
 
 ```bash
-git add .
-git commit -m "feat: your feature description"
+supabase bootstrap
 ```
 
-3. Push and create a pull request:
+Or using npx:
 
 ```bash
-git push origin feature/your-feature-name
+npx supabase bootstrap
 ```
 
-## 📄 License
+The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
 
-This project is private and confidential. All rights reserved.
+## Docs
 
-## 🤝 Support
+Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
 
-For support or questions, please contact the development team.
+## Breaking changes
+
+We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
+
+However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
+
+## Developing
+
+To run from source:
+
+```sh
+# Go >= 1.22
+go run . help
+```
