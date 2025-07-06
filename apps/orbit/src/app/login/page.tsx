@@ -1,15 +1,46 @@
-import { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
 import { LoginForm } from "@/components/login-form";
-
-export const metadata: Metadata = {
-  title: "Login | Orbit Dashboard",
-  description: "Login to access the Orbit admin dashboard",
-};
+import { checkSupabaseConnection } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const { success, error } = await checkSupabaseConnection();
+      if (!success && error) {
+        setError(error);
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-red-500 text-center p-4">
+          <h2 className="text-lg font-semibold">Error</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
