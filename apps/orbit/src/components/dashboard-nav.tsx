@@ -42,7 +42,7 @@ export function DashboardNav() {
             pathname === item.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
-            "justify-start"
+            "justify-start",
           )}
         >
           {item.title}
@@ -50,4 +50,4 @@ export function DashboardNav() {
       ))}
     </nav>
   );
-} 
+}

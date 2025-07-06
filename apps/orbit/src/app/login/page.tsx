@@ -27,8 +27,8 @@ export default function LoginPage() {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
-              &ldquo;Streamline your project management and team collaboration with
-              Orbit - the central hub for your organization.&rdquo;
+              &ldquo;Streamline your project management and team collaboration
+              with Orbit - the central hub for your organization.&rdquo;
             </p>
           </blockquote>
         </div>
@@ -45,7 +45,10 @@ export default function LoginPage() {
           </div>
           <LoginForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
-            <Link href="/register" className="hover:text-brand underline underline-offset-4">
+            <Link
+              href="/register"
+              className="hover:text-brand underline underline-offset-4"
+            >
               Don&apos;t have an account? Sign up
             </Link>
           </p>
@@ -53,4 +56,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-} 
+}

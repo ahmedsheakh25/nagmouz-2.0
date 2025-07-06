@@ -1,5 +1,10 @@
-import OpenAI from 'openai';
-import { Message } from '@/types';
+import OpenAI from "openai";
+import { Message } from "@/types";
+
+interface ChatResponse {
+  message: string;
+  error?: string;
+}
 
 export class ChatService {
   private openai: OpenAI;
@@ -19,10 +24,10 @@ export class ChatService {
   async getResponse(messages: Message[]): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: "gpt-4-turbo-preview",
         messages: [
-          { role: 'system', content: this.context },
-          ...messages.map(msg => ({
+          { role: "system", content: this.context },
+          ...messages.map((msg) => ({
             role: msg.role as OpenAI.ChatCompletionRole,
             content: msg.content,
           })),
@@ -31,9 +36,9 @@ export class ChatService {
         max_tokens: 500,
       });
 
-      return response.choices[0]?.message?.content || '';
+      return response.choices[0]?.message?.content || "";
     } catch (error) {
-      console.error('Error getting chat response:', error);
+      console.error("Error getting chat response:", error);
       throw error;
     }
   }
@@ -53,19 +58,43 @@ export class ChatService {
       7. Success Metrics`;
 
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: "gpt-4-turbo-preview",
         messages: [
-          { role: 'system', content: this.context },
-          { role: 'user', content: prompt },
+          { role: "system", content: this.context },
+          { role: "user", content: prompt },
         ],
         temperature: 0.7,
         max_tokens: 1000,
       });
 
-      return response.choices[0]?.message?.content || '';
+      return response.choices[0]?.message?.content || "";
     } catch (error) {
-      console.error('Error generating brief:', error);
+      console.error("Error generating brief:", error);
       throw error;
     }
   }
-} 
+
+  async sendMessage(message: string): Promise<ChatResponse> {
+    try {
+      const response = await this.openai.chat.completions.create({
+        model: "gpt-4-turbo-preview",
+        messages: [
+          { role: "system", content: this.context },
+          { role: "user", content: message },
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+      });
+
+      return {
+        message: response.choices[0]?.message?.content || "",
+      };
+    } catch (error) {
+      console.error("Error sending message:", error);
+      return {
+        message: "",
+        error: error instanceof Error ? error.message : "An error occurred",
+      };
+    }
+  }
+}

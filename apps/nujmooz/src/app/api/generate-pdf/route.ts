@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import PDFDocument from 'pdfkit';
-import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from "next/server";
+import PDFDocument from "pdfkit";
+import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
 export async function POST(request: Request) {
@@ -13,19 +13,19 @@ export async function POST(request: Request) {
 
     // Create a PDF document
     const doc = new PDFDocument();
-    let buffers: Buffer[] = [];
+    const buffers: Buffer[] = [];
 
     // Collect PDF data chunks
-    doc.on('data', (chunk) => buffers.push(chunk));
+    doc.on("data", (chunk) => buffers.push(chunk));
 
     // Add content to PDF
-    doc.fontSize(24).text('Project Brief', { align: 'center' });
+    doc.fontSize(24).text("Project Brief", { align: "center" });
     doc.moveDown();
     doc.fontSize(18).text(title);
     doc.moveDown();
 
     // Client Information
-    doc.fontSize(14).text('Client Information');
+    doc.fontSize(14).text("Client Information");
     doc.fontSize(12);
     doc.text(`Name: ${clientInfo.name}`);
     doc.text(`Email: ${clientInfo.email}`);
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     doc.moveDown();
 
     // Project Answers
-    doc.fontSize(14).text('Project Details');
+    doc.fontSize(14).text("Project Details");
     doc.fontSize(12);
     Object.entries(answers).forEach(([question, answer]) => {
       doc.text(question);
@@ -49,28 +49,28 @@ export async function POST(request: Request) {
 
     // Upload to Supabase Storage
     const timestamp = Date.now();
-    const fileName = `briefs/${timestamp}-${title.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+    const fileName = `briefs/${timestamp}-${title.toLowerCase().replace(/\s+/g, "-")}.pdf`;
 
     const { data, error } = await supabase.storage
-      .from('documents')
+      .from("documents")
       .upload(fileName, pdfBuffer, {
-        contentType: 'application/pdf',
-        cacheControl: '3600',
+        contentType: "application/pdf",
+        cacheControl: "3600",
       });
 
     if (error) throw error;
 
     // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('documents')
-      .getPublicUrl(fileName);
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("documents").getPublicUrl(fileName);
 
     return NextResponse.json({ url: publicUrl });
   } catch (error) {
-    console.error('Error generating PDF:', error);
+    console.error("Error generating PDF:", error);
     return NextResponse.json(
-      { error: 'Failed to generate PDF' },
-      { status: 500 }
+      { error: "Failed to generate PDF" },
+      { status: 500 },
     );
   }
-} 
+}

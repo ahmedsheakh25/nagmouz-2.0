@@ -1,2 +1,2 @@
 // Export components here
-export * from './theme-provider'; 
+export * from "./theme-provider";

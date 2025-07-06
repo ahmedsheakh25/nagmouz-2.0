@@ -3,11 +3,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ProjectSummaryModalProps {
   open: boolean;
@@ -129,20 +129,24 @@ export function ProjectSummaryModal({
                 <div className="flex justify-between">
                   <span>Total Budget</span>
                   <span>
-                    {project.budget.currency} {project.budget.total.toLocaleString()}
+                    {project.budget.currency}{" "}
+                    {project.budget.total.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Spent</span>
                   <span>
-                    {project.budget.currency} {project.budget.spent.toLocaleString()}
+                    {project.budget.currency}{" "}
+                    {project.budget.spent.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between font-semibold">
                   <span>Remaining</span>
                   <span>
-                    {project.budget.currency}{' '}
-                    {(project.budget.total - project.budget.spent).toLocaleString()}
+                    {project.budget.currency}{" "}
+                    {(
+                      project.budget.total - project.budget.spent
+                    ).toLocaleString()}
                   </span>
                 </div>
                 <Progress
@@ -156,4 +160,4 @@ export function ProjectSummaryModal({
       </DialogContent>
     </Dialog>
   );
-} 
+}

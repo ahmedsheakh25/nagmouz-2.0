@@ -8,7 +8,10 @@ export default async function DashboardPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const name = session?.user?.user_metadata?.full_name || session?.user?.email?.split("@")[0] || "User";
+  const name =
+    session?.user?.user_metadata?.full_name ||
+    session?.user?.email?.split("@")[0] ||
+    "User";
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
@@ -28,4 +31,4 @@ export default async function DashboardPage() {
       </div>
     </div>
   );
-} 
+}

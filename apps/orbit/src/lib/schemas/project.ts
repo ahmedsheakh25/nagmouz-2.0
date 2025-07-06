@@ -1,7 +1,12 @@
 import * as z from "zod";
 
 export const projectTypes = ["branding", "web", "mobile", "marketing"] as const;
-export const projectStatuses = ["pending", "in_progress", "completed", "cancelled"] as const;
+export const projectStatuses = [
+  "pending",
+  "in_progress",
+  "completed",
+  "cancelled",
+] as const;
 
 export const projectSchema = z.object({
   name: z.string().min(2, "Project name must be at least 2 characters"),
@@ -19,4 +24,4 @@ export interface Project extends ProjectFormValues {
   id: string;
   user_id: string;
   created_at: string;
-} 
+}

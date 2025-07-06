@@ -1,12 +1,14 @@
 # Nagmouz 2.0
 
 A monorepo project containing two applications:
+
 - **Nujmooz**: Voice-interactive AI chat assistant
 - **Orbit**: Admin Dashboard
 
 ## 🚀 Features
 
 ### Nujmooz
+
 - Voice-based interaction with AI assistant
 - Real-time transcription using Whisper
 - Natural responses with ElevenLabs text-to-speech
@@ -15,6 +17,7 @@ A monorepo project containing two applications:
 - Trello integration for project management
 
 ### Orbit
+
 - Project management dashboard
 - Client relationship management
 - Brief tracking and management
@@ -60,11 +63,13 @@ nagmouz-2.0/
 ### Environment Setup
 
 1. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 2. Set up environment variables:
+
 ```bash
 # Copy environment templates
 cp apps/orbit/.env.example apps/orbit/.env.local
@@ -149,15 +154,18 @@ make logs         # View application logs
 ## 🔍 Monitoring & Maintenance
 
 ### Error Tracking
+
 - Vercel Analytics enabled
 - Error logging to external service
 
 ### Performance Monitoring
+
 - Vercel Edge Analytics
 - Real User Monitoring
 - Performance metrics tracking
 
 ### Security
+
 - Regular dependency updates
 - Environment variable audits
 - Security scanning
@@ -165,17 +173,20 @@ make logs         # View application logs
 ## 📝 Contributing
 
 1. Create a feature branch:
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
 
 2. Make your changes and commit:
+
 ```bash
 git add .
 git commit -m "feat: your feature description"
 ```
 
 3. Push and create a pull request:
+
 ```bash
 git push origin feature/your-feature-name
 ```
@@ -186,4 +197,4 @@ This project is private and confidential. All rights reserved.
 
 ## 🤝 Support
 
-For support or questions, please contact the development team. 
+For support or questions, please contact the development team.

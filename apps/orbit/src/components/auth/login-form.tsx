@@ -1,29 +1,29 @@
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@nagmouz/ui';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert } from '@/components/ui/alert';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@nagmouz/ui";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert } from "@/components/ui/alert";
 
 export function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       await signIn(email, password);
-      router.push('/dashboard');
+      router.push("/dashboard");
     } catch (error) {
-      setError('Invalid email or password');
+      setError("Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -31,11 +31,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {error && (
-        <Alert variant="destructive">
-          {error}
-        </Alert>
-      )}
+      {error && <Alert variant="destructive">{error}</Alert>}
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
@@ -59,22 +55,15 @@ export function LoginForm() {
         />
       </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={loading}
-      >
-        {loading ? 'Signing in...' : 'Sign in'}
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Signing in..." : "Sign in"}
       </Button>
 
       <div className="text-center text-sm">
-        <a
-          href="/register"
-          className="text-primary hover:underline"
-        >
+        <a href="/register" className="text-primary hover:underline">
           Don't have an account? Sign up
         </a>
       </div>
     </form>
   );
-} 
+}

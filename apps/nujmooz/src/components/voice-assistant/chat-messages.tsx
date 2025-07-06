@@ -1,5 +1,5 @@
-import { Message } from '@/types';
-import { cn } from '@nagmouz/ui';
+import { Message } from "@/types";
+import { cn } from "@nagmouz/ui";
 
 interface ChatMessagesProps {
   messages: Message[];
@@ -12,16 +12,16 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
         <div
           key={message.id}
           className={cn(
-            'flex w-full',
-            message.role === 'user' ? 'justify-end' : 'justify-start'
+            "flex w-full",
+            message.role === "user" ? "justify-end" : "justify-start",
           )}
         >
           <div
             className={cn(
-              'rounded-lg px-4 py-2 max-w-[80%]',
-              message.role === 'user'
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted'
+              "rounded-lg px-4 py-2 max-w-[80%]",
+              message.role === "user"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted",
             )}
           >
             <p className="text-sm">{message.content}</p>
@@ -38,4 +38,4 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
       ))}
     </div>
   );
-} 
+}

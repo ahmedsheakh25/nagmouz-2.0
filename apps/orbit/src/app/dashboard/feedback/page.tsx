@@ -20,4 +20,4 @@ export default function FeedbackPage() {
       </div>
     </div>
   );
-} 
+}

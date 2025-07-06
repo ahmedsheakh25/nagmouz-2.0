@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Sidebar } from './sidebar';
+import { ReactNode } from "react";
+import { Sidebar } from "./sidebar";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -14,4 +14,4 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </main>
     </div>
   );
-} 
+}
