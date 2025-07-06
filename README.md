@@ -1,8 +1,8 @@
 # Nagmouz 2.0
 
-A monorepo containing two applications:
-1. **Nujmooz** - A voice-interactive AI chat assistant
-2. **Orbit** - An admin dashboard for team operations
+A monorepo project containing two applications:
+- **Nujmooz**: Voice-interactive AI chat assistant
+- **Orbit**: Admin Dashboard
 
 ## 🚀 Features
 
@@ -49,34 +49,53 @@ nagmouz-2.0/
 └── supabase/            # Database schema and migrations
 ```
 
-## 🏗️ Setup
+## Local Development
 
-1. Clone the repository:
-```bash
-git clone https://github.com/your-username/nagmouz-2.0.git
-cd nagmouz-2.0
-```
+### Environment Setup
+
+1. Create `.env` files in both app directories:
+   ```bash
+   # apps/nujmooz/.env
+   # apps/orbit/.env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
 2. Install dependencies:
-```bash
-pnpm install
+   ```bash
+   pnpm install
+   ```
+
+3. Start development servers:
+
+   For Nujmooz:
+   ```bash
+   cd apps/nujmooz && pnpm dev
+   ```
+
+   For Orbit:
+   ```bash
+   cd apps/orbit && pnpm dev
+   ```
+
+4. Test Supabase connection:
+   - Nujmooz: Visit http://localhost:3000/test
+   - Orbit: Visit http://localhost:3001/test
+
+## Vercel Deployment
+
+### Environment Variables
+
+Add the following environment variables in your Vercel project settings for both apps:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-3. Set up environment variables:
-```bash
-cp .env.example .env
-```
+### Testing Supabase Connection
 
-4. Fill in the required environment variables:
-- Supabase configuration
-- OpenAI API key
-- ElevenLabs API key
-- Trello credentials
-
-5. Start the development server:
-```bash
-pnpm dev
-```
+After deployment, visit `/test` route on both apps to verify Supabase connection is working correctly.
 
 ## 🌐 Deployment
 
