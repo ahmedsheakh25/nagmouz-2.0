@@ -7,21 +7,41 @@ export async function middleware(request: NextRequest) {
   const supabase = createMiddlewareClient({ req: request, res });
   const { data: { session } } = await supabase.auth.getSession();
 
-  // Public routes that don't require authentication
-  const publicRoutes = ['/login', '/register'];
-  const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname);
+  // Check auth condition
+  const isAuth = !!session;
+  const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
+                    request.nextUrl.pathname.startsWith('/register');
 
-  if (!session && !isPublicRoute) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (isAuthPage) {
+    if (isAuth) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    return res;
   }
 
-  if (session && isPublicRoute) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+  if (!isAuth) {
+    let from = request.nextUrl.pathname;
+    if (request.nextUrl.search) {
+      from += request.nextUrl.search;
+    }
+    
+    return NextResponse.redirect(
+      new URL(`/login?from=${encodeURIComponent(from)}`, request.url)
+    );
   }
 
   return res;
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public (public files)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|public).*)',
+  ],
 }; 
