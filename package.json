@@ -2,25 +2,45 @@
   "name": "nagmouz-2.0",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "orbit:dev": "pnpm --filter orbit dev",
+    "nujmooz:dev": "pnpm --filter nujmooz dev",
+    "orbit:build": "pnpm --filter orbit build",
+    "nujmooz:build": "pnpm --filter nujmooz build",
+    "test": "turbo run test",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "@types/node": "^24.0.10",
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.4",
-    "typescript": "^5.8.3"
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.2",
+    "typescript": "^5.3.3"
   },
   "packageManager": "pnpm@10.12.4",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=10.12.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

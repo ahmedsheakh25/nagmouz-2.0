@@ -15,7 +15,7 @@ YELLOW := \033[0;33m
 RED := \033[0;31m
 NC := \033[0m # No Color
 
-.PHONY: help setup install dev down clean rebuild logs test lint format
+.PHONY: help setup install dev down clean rebuild logs test lint format deploy-orbit deploy-nujmooz db-push db-reset update-deps check-deps docker-up docker-down docker-logs
 
 help: ## Show this help message
 	@echo -e "$(CYAN)Available commands:$(NC)"
@@ -53,6 +53,9 @@ clean: down ## Clean up development environment and node_modules
 	@rm -rf node_modules
 	@rm -rf apps/*/node_modules
 	@rm -rf packages/*/node_modules
+	@rm -rf apps/*/.next
+	@rm -rf apps/*/dist
+	@rm -rf packages/*/dist
 	@echo -e "$(GREEN)Cleanup complete!$(NC)"
 
 rebuild: clean setup dev ## Rebuild entire development environment
@@ -108,4 +111,49 @@ prod: ## Build and start production environment
 	@docker run -d -p 3000:3000 -p 3001:3001 --name nagmouz-prod nagmouz
 	@echo -e "$(GREEN)Production environment is running!$(NC)"
 	@echo -e "$(CYAN)Orbit: http://localhost:3000$(NC)"
-	@echo -e "$(CYAN)Nujmooz: http://localhost:3001$(NC)" 
+	@echo -e "$(CYAN)Nujmooz: http://localhost:3001$(NC)"
+
+deploy-orbit:
+	@echo -e "$(GREEN)Deploying Orbit to Vercel...$(NC)"
+	@cd apps/orbit && vercel --prod
+	@echo -e "$(GREEN)Orbit deployment complete!$(NC)"
+
+deploy-nujmooz:
+	@echo -e "$(GREEN)Deploying Nujmooz to Vercel...$(NC)"
+	@cd apps/nujmooz && vercel --prod
+	@echo -e "$(GREEN)Nujmooz deployment complete!$(NC)"
+
+db-push:
+	@echo -e "$(GREEN)Pushing database changes...$(NC)"
+	@cd apps/orbit && pnpm supabase db push
+	@echo -e "$(GREEN)Database push complete!$(NC)"
+
+check-deps:
+	@echo -e "$(GREEN)Checking for dependency vulnerabilities...$(NC)"
+	@pnpm audit
+	@echo -e "$(GREEN)Dependency check complete!$(NC)"
+
+docker-up:
+	@echo -e "$(GREEN)Starting Docker containers...$(NC)"
+	@docker-compose up -d
+	@echo -e "$(GREEN)Docker containers started!$(NC)"
+
+docker-down:
+	@echo -e "$(YELLOW)Stopping Docker containers...$(NC)"
+	@docker-compose down
+	@echo -e "$(GREEN)Docker containers stopped!$(NC)"
+
+docker-logs:
+	@echo -e "$(GREEN)Viewing Docker logs...$(NC)"
+	@docker-compose logs -f
+
+setup-env:
+	@echo "Setting up environment files..."
+	@if [ ! -f apps/orbit/.env.local ]; then \
+		cp apps/orbit/env.local.env apps/orbit/.env.local; \
+		echo "Created apps/orbit/.env.local"; \
+	fi
+	@if [ ! -f apps/nujmooz/.env.local ]; then \
+		cp apps/nujmooz/env.local.env apps/nujmooz/.env.local; \
+		echo "Created apps/nujmooz/.env.local"; \
+	fi 

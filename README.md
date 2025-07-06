@@ -49,128 +49,141 @@ nagmouz-2.0/
 └── supabase/            # Database schema and migrations
 ```
 
-## Local Development
+## 🔧 Local Development
+
+### Prerequisites
+
+- Node.js 18 or later
+- pnpm 10.12.4 or later
+- Docker (optional, for local database)
 
 ### Environment Setup
 
-1. Create `.env` files in both app directories by copying the template:
-   ```bash
-   # For Nujmooz
-   cd apps/nujmooz
-   cp env.local.template .env
-
-   # For Orbit
-   cd apps/orbit
-   cp env.local.template .env
-   ```
-
-2. Update the `.env` files with your actual Supabase credentials:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-   ⚠️ **IMPORTANT**: 
-   - Never commit `.env` files to Git
-   - Keep your Supabase credentials secure
-   - The `.env` files are already in `.gitignore`
-
-3. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-
-4. Start development servers:
-   ```bash
-   # For Nujmooz
-   cd apps/nujmooz && pnpm dev
-
-   # For Orbit
-   cd apps/orbit && pnpm dev
-   ```
-
-5. Test Supabase connection:
-   - Nujmooz: Visit http://localhost:3000/test
-   - Orbit: Visit http://localhost:3001/test
-
-## Vercel Deployment
-
-### Environment Variables
-
-Add the following environment variables in your Vercel project settings for both apps:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-⚠️ **IMPORTANT**: 
-- Never expose these values in your code
-- Always set environment variables through the Vercel Dashboard
-- Use different Supabase projects/keys for development and production
-
-### Testing Supabase Connection
-
-After deployment, visit `/test` route on both apps to verify:
-- ✅ Supabase connection is working
-- 🔐 Environment variables are secure
-- 📊 Data is being fetched correctly
-
-## 🌐 Deployment
-
-The project is configured for deployment on Vercel:
-
-1. Create two new projects on Vercel:
-   - `nujmooz.ofspace.studio` for the voice assistant
-   - `orbit.ofspace.studio` for the admin dashboard
-
-2. Configure environment variables in Vercel:
-   - Add all required API keys and credentials
-   - Set up domain configuration
-
-3. Deploy:
+1. Install dependencies:
 ```bash
-vercel --prod
+pnpm install
 ```
 
-## 🔑 Environment Variables
-
-Required environment variables:
-
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
-
-# ElevenLabs
-ELEVENLABS_API_KEY=your_elevenlabs_api_key
-ELEVENLABS_VOICE_ID=your_voice_id
-
-# Trello
-TRELLO_KEY=your_trello_key
-TRELLO_TOKEN=your_trello_token
-TRELLO_BOARD_ID=your_board_id
-TRELLO_LIST_ID=your_list_id
-```
-
-## 📱 PWA Support
-
-Both applications are configured as Progressive Web Apps:
-- Installable on mobile devices
-- Offline support
-- Push notifications (coming soon)
-
-## 🧪 Testing
-
-Run tests:
+2. Set up environment variables:
 ```bash
-pnpm test
+# Copy environment templates
+cp apps/orbit/.env.example apps/orbit/.env.local
+cp apps/nujmooz/.env.example apps/nujmooz/.env.local
+```
+
+3. Update the environment variables in each `.env.local` file with your credentials.
+
+### Development Commands
+
+```bash
+# Start both apps in development mode
+make dev
+
+# Start individual apps
+make orbit-dev    # Start Orbit only
+make nujmooz-dev  # Start Nujmooz only
+
+# Other useful commands
+make clean        # Clean up build files and dependencies
+make rebuild      # Full rebuild of the environment
+make logs         # View application logs
+```
+
+## 🚀 Deployment
+
+### Deploying to Vercel
+
+#### Orbit (Admin Dashboard)
+
+1. Create a new project on Vercel
+2. Connect your GitHub repository
+3. Configure build settings:
+   - Framework Preset: Next.js
+   - Root Directory: `apps/orbit`
+   - Build Command: `cd ../.. && pnpm build --filter=orbit...`
+   - Install Command: `cd ../.. && pnpm install`
+   - Output Directory: `.next`
+
+4. Add environment variables:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_ANON_KEY
+   SUPABASE_SERVICE_ROLE_KEY
+   TRELLO_KEY
+   TRELLO_TOKEN
+   TRELLO_BOARD_ID
+   TRELLO_LIST_ID
+   ```
+
+#### Nujmooz (Public Assistant)
+
+1. Create a new project on Vercel
+2. Connect your GitHub repository
+3. Configure build settings:
+   - Framework Preset: Next.js
+   - Root Directory: `apps/nujmooz`
+   - Build Command: `cd ../.. && pnpm build --filter=nujmooz...`
+   - Install Command: `cd ../.. && pnpm install`
+   - Output Directory: `.next`
+
+4. Add environment variables:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_ANON_KEY
+   SUPABASE_SERVICE_ROLE_KEY
+   OPENAI_API_KEY
+   ELEVENLABS_API_KEY
+   ELEVENLABS_VOICE_ID
+   ```
+
+### Post-Deployment
+
+1. Configure custom domains in Vercel:
+   - Orbit: `admin.yourdomain.com`
+   - Nujmooz: `app.yourdomain.com`
+
+2. Set up SSL certificates (automatic with Vercel)
+
+3. Configure environment variables in Vercel UI
+
+## 🔍 Monitoring & Maintenance
+
+### Error Tracking
+- Vercel Analytics enabled
+- Error logging to external service
+
+### Performance Monitoring
+- Vercel Edge Analytics
+- Real User Monitoring
+- Performance metrics tracking
+
+### Security
+- Regular dependency updates
+- Environment variable audits
+- Security scanning
+
+## 📝 Contributing
+
+1. Create a feature branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+2. Make your changes and commit:
+```bash
+git add .
+git commit -m "feat: your feature description"
+```
+
+3. Push and create a pull request:
+```bash
+git push origin feature/your-feature-name
 ```
 
 ## 📄 License
 
-MIT License - see LICENSE file for details 
+This project is private and confidential. All rights reserved.
+
+## 🤝 Support
+
+For support or questions, please contact the development team. 
