@@ -1,20 +1,20 @@
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@nagmouz/ui';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@nagmouz/ui";
 import {
   BarChart,
   FileText,
   FolderKanban,
   MessageSquare,
   Users,
-} from 'lucide-react';
+} from "lucide-react";
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: BarChart },
-  { name: 'Projects', href: '/dashboard/projects', icon: FolderKanban },
-  { name: 'Briefs', href: '/dashboard/briefs', icon: FileText },
-  { name: 'Clients', href: '/dashboard/clients', icon: Users },
-  { name: 'Feedback', href: '/dashboard/feedback', icon: MessageSquare },
+  { name: "Dashboard", href: "/dashboard", icon: BarChart },
+  { name: "Projects", href: "/dashboard/projects", icon: FolderKanban },
+  { name: "Briefs", href: "/dashboard/briefs", icon: FileText },
+  { name: "Clients", href: "/dashboard/clients", icon: Users },
+  { name: "Feedback", href: "/dashboard/feedback", icon: MessageSquare },
 ];
 
 export function Sidebar() {
@@ -33,16 +33,18 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                'group flex items-center rounded-md px-3 py-2 text-sm font-medium',
+                "group flex items-center rounded-md px-3 py-2 text-sm font-medium",
                 isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >
               <item.icon
                 className={cn(
-                  'mr-3 h-5 w-5',
-                  isActive ? 'text-primary-foreground' : 'text-muted-foreground'
+                  "mr-3 h-5 w-5",
+                  isActive
+                    ? "text-primary-foreground"
+                    : "text-muted-foreground",
                 )}
               />
               {item.name}
@@ -52,4 +54,4 @@ export function Sidebar() {
       </nav>
     </div>
   );
-} 
+}

@@ -58,7 +58,7 @@ export default function ProjectsPage() {
         },
         () => {
           fetchProjects();
-        }
+        },
       )
       .subscribe();
 
@@ -115,10 +115,7 @@ export default function ProjectsPage() {
       {projects.length === 0 ? (
         <div className="flex h-[450px] flex-col items-center justify-center space-y-4">
           <p className="text-lg text-muted-foreground">No projects found</p>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(true)}
-          >
+          <Button variant="outline" onClick={() => setOpen(true)}>
             Create your first project
           </Button>
         </div>
@@ -140,9 +137,13 @@ export default function ProjectsPage() {
                   <TableCell className="capitalize">{project.type}</TableCell>
                   <TableCell>
                     <Badge variant={getStatusColor(project.status)}>
-                      {project.status.split("_").map(word => 
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                      ).join(" ")}
+                      {project.status
+                        .split("_")
+                        .map(
+                          (word) =>
+                            word.charAt(0).toUpperCase() + word.slice(1),
+                        )
+                        .join(" ")}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -156,4 +157,4 @@ export default function ProjectsPage() {
       )}
     </div>
   );
-} 
+}

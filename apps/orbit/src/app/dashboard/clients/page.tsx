@@ -1,5 +1,5 @@
-import { DashboardLayout } from '@/components/layout/dashboard';
-import { ClientsTable } from './clients-table';
+import { DashboardLayout } from "@/components/layout/dashboard";
+import { ClientsTable } from "./clients-table";
 
 export default function ClientsPage() {
   return (
@@ -16,4 +16,4 @@ export default function ClientsPage() {
       </div>
     </DashboardLayout>
   );
-} 
+}

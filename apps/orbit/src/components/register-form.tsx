@@ -17,9 +17,11 @@ const registerSchema = z.object({
 
 type RegisterValues = z.infer<typeof registerSchema>;
 
-interface RegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface RegisterFormProps {
+  className?: string;
+}
 
-export function RegisterForm({ className, ...props }: RegisterFormProps) {
+export function RegisterForm({ className = "" }: RegisterFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>("");
@@ -55,22 +57,20 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
 
     // Create user profile in the users table
     if (authData.user) {
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert([
-          {
-            id: authData.user.id,
-            email: data.email,
-            name: data.name,
-          },
-        ]);
+      const { error: profileError } = await supabase.from("users").insert([
+        {
+          id: authData.user.id,
+          email: data.email,
+          name: data.name,
+        },
+      ]);
 
       if (profileError) {
-        console.error('Error creating user profile:', profileError);
+        console.error("Error creating user profile:", profileError);
       }
     }
 
-    router.push('/dashboard');
+    router.push("/dashboard");
   }
 
   const handleGoogleSignUp = async () => {
@@ -91,7 +91,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
   };
 
   return (
-    <div className="grid gap-6" {...props}>
+    <div className={`grid gap-6 ${className}`}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-4">
           <div className="grid gap-2">
@@ -144,11 +144,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
               </p>
             )}
           </div>
-          {error && (
-            <div className="text-sm text-red-500">
-              {error}
-            </div>
-          )}
+          {error && <div className="text-sm text-red-500">{error}</div>}
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -182,4 +178,4 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
       </Button>
     </div>
   );
-} 
+}

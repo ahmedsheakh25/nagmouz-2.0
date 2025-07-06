@@ -6,9 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { supabase } from "@/lib/supabaseClient";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface LoginFormProps {
+  className?: string;
+}
 
-export function LoginForm({ className, ...props }: UserAuthFormProps) {
+export function LoginForm({ className = "" }: LoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -56,7 +58,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
   };
 
   return (
-    <div className="grid gap-6" {...props}>
+    <div className={`grid gap-6 ${className}`}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
           <div className="grid gap-2">
@@ -84,11 +86,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               required
             />
           </div>
-          {error && (
-            <div className="text-sm text-red-500">
-              {error}
-            </div>
-          )}
+          {error && <div className="text-sm text-red-500">{error}</div>}
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

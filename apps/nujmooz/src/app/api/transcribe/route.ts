@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -8,12 +8,12 @@ const openai = new OpenAI({
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
-    const audioFile = formData.get('audio') as File;
+    const audioFile = formData.get("audio") as File;
 
     if (!audioFile) {
       return NextResponse.json(
-        { error: 'No audio file provided' },
-        { status: 400 }
+        { error: "No audio file provided" },
+        { status: 400 },
       );
     }
 
@@ -22,16 +22,16 @@ export async function POST(request: Request) {
 
     const response = await openai.audio.transcriptions.create({
       file: buffer,
-      model: 'whisper-1',
-      language: 'en',
+      model: "whisper-1",
+      language: "en",
     });
 
     return NextResponse.json({ text: response.text });
   } catch (error) {
-    console.error('Error transcribing audio:', error);
+    console.error("Error transcribing audio:", error);
     return NextResponse.json(
-      { error: 'Failed to transcribe audio' },
-      { status: 500 }
+      { error: "Failed to transcribe audio" },
+      { status: 500 },
     );
   }
-} 
+}

@@ -1,5 +1,5 @@
-import { cn } from '@nagmouz/ui';
-import { Mic, MicOff } from 'lucide-react';
+import { cn } from "@nagmouz/ui";
+import { Mic, MicOff } from "lucide-react";
 
 interface VoiceRecorderProps {
   isRecording: boolean;
@@ -17,10 +17,10 @@ export function VoiceRecorder({
       <button
         onClick={isRecording ? onStopRecording : onStartRecording}
         className={cn(
-          'rounded-full p-4 transition-colors',
+          "rounded-full p-4 transition-colors",
           isRecording
-            ? 'bg-destructive text-destructive-foreground animate-pulse'
-            : 'bg-primary text-primary-foreground hover:bg-primary/90'
+            ? "bg-destructive text-destructive-foreground animate-pulse"
+            : "bg-primary text-primary-foreground hover:bg-primary/90",
         )}
       >
         {isRecording ? (
@@ -31,4 +31,4 @@ export function VoiceRecorder({
       </button>
     </div>
   );
-} 
+}

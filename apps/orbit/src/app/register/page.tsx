@@ -44,7 +44,10 @@ export default function RegisterPage() {
           </div>
           <RegisterForm />
           <p className="px-8 text-center text-sm text-muted-foreground">
-            <Link href="/login" className="hover:text-brand underline underline-offset-4">
+            <Link
+              href="/login"
+              className="hover:text-brand underline underline-offset-4"
+            >
               Already have an account? Sign in
             </Link>
           </p>
@@ -52,4 +55,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-} 
+}

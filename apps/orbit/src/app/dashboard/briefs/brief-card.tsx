@@ -1,9 +1,9 @@
-import { Card } from '@nagmouz/ui';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { FileText, Download, Send } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from '@/components/ui/use-toast';
+import { Card } from "@nagmouz/ui";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FileText, Download, Send } from "lucide-react";
+import { useState } from "react";
+import { toast } from "@/components/ui/use-toast";
 
 interface Brief {
   id: string;
@@ -26,10 +26,10 @@ interface BriefCardProps {
 }
 
 const statusColors = {
-  pending_review: 'bg-yellow-500',
-  approved: 'bg-green-500',
-  in_progress: 'bg-blue-500',
-  rejected: 'bg-red-500',
+  pending_review: "bg-yellow-500",
+  approved: "bg-green-500",
+  in_progress: "bg-blue-500",
+  rejected: "bg-red-500",
 };
 
 export function BriefCard({ brief }: BriefCardProps) {
@@ -39,10 +39,10 @@ export function BriefCard({ brief }: BriefCardProps) {
   const handleDownloadPDF = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/generate-pdf', {
-        method: 'POST',
+      const response = await fetch("/api/generate-pdf", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: brief.projectTitle,
@@ -51,16 +51,16 @@ export function BriefCard({ brief }: BriefCardProps) {
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to generate PDF');
+      if (!response.ok) throw new Error("Failed to generate PDF");
 
       const { url } = await response.json();
-      window.open(url, '_blank');
+      window.open(url, "_blank");
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error("Error downloading PDF:", error);
       toast({
-        title: 'Error',
-        description: 'Failed to generate PDF. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to generate PDF. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -70,10 +70,10 @@ export function BriefCard({ brief }: BriefCardProps) {
   const handleSendToTrello = async () => {
     try {
       setSendingToTrello(true);
-      const response = await fetch('/api/send-to-trello', {
-        method: 'POST',
+      const response = await fetch("/api/send-to-trello", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: brief.projectTitle,
@@ -82,20 +82,20 @@ export function BriefCard({ brief }: BriefCardProps) {
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to create Trello card');
+      if (!response.ok) throw new Error("Failed to create Trello card");
 
       const { cardUrl } = await response.json();
       toast({
-        title: 'Success',
-        description: 'Brief sent to Trello successfully!',
+        title: "Success",
+        description: "Brief sent to Trello successfully!",
       });
-      window.open(cardUrl, '_blank');
+      window.open(cardUrl, "_blank");
     } catch (error) {
-      console.error('Error sending to Trello:', error);
+      console.error("Error sending to Trello:", error);
       toast({
-        title: 'Error',
-        description: 'Failed to send to Trello. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to send to Trello. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setSendingToTrello(false);
@@ -108,7 +108,9 @@ export function BriefCard({ brief }: BriefCardProps) {
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-semibold">{brief.projectTitle}</h3>
-            <p className="text-sm text-muted-foreground">{brief.client.company}</p>
+            <p className="text-sm text-muted-foreground">
+              {brief.client.company}
+            </p>
           </div>
           <Badge
             variant="secondary"
@@ -135,7 +137,9 @@ export function BriefCard({ brief }: BriefCardProps) {
             onClick={handleDownloadPDF}
             disabled={loading}
           >
-            {loading ? 'Generating...' : (
+            {loading ? (
+              "Generating..."
+            ) : (
               <>
                 <Download className="h-4 w-4 mr-2" />
                 Download PDF
@@ -148,7 +152,9 @@ export function BriefCard({ brief }: BriefCardProps) {
             onClick={handleSendToTrello}
             disabled={sendingToTrello}
           >
-            {sendingToTrello ? 'Sending...' : (
+            {sendingToTrello ? (
+              "Sending..."
+            ) : (
               <>
                 <Send className="h-4 w-4 mr-2" />
                 Send to Trello
@@ -159,4 +165,4 @@ export function BriefCard({ brief }: BriefCardProps) {
       </div>
     </Card>
   );
-} 
+}

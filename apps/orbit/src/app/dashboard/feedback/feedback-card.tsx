@@ -1,5 +1,5 @@
-import { Card } from '@nagmouz/ui';
-import { Star } from 'lucide-react';
+import { Card } from "@nagmouz/ui";
+import { Star } from "lucide-react";
 
 interface Feedback {
   id: string;
@@ -24,7 +24,7 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
             <Star
               key={i}
               className={`h-5 w-5 ${
-                i < feedback.rating ? 'fill-yellow-400' : 'fill-gray-200'
+                i < feedback.rating ? "fill-yellow-400" : "fill-gray-200"
               }`}
             />
           ))}
@@ -45,4 +45,4 @@ export function FeedbackCard({ feedback }: FeedbackCardProps) {
       </div>
     </Card>
   );
-} 
+}

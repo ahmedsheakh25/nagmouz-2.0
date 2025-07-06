@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 interface TrelloCard {
   name: string;
   desc: string;
   idList: string;
-  pos: 'top' | 'bottom';
+  pos: "top" | "bottom";
 }
 
 export async function POST(request: Request) {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 ## Project Details
 ${Object.entries(answers)
   .map(([question, answer]) => `### ${question}\n${answer}`)
-  .join('\n\n')}
+  .join("\n\n")}
 
 Created: ${new Date().toISOString()}
     `.trim();
@@ -32,33 +32,33 @@ Created: ${new Date().toISOString()}
       name: title,
       desc: description,
       idList: process.env.TRELLO_LIST_ID!,
-      pos: 'top',
+      pos: "top",
     };
 
     // Send to Trello API
     const response = await fetch(
       `https://api.trello.com/1/cards?key=${process.env.TRELLO_KEY}&token=${process.env.TRELLO_TOKEN}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(card),
-      }
+      },
     );
 
     if (!response.ok) {
-      throw new Error('Failed to create Trello card');
+      throw new Error("Failed to create Trello card");
     }
 
     const trelloCard = await response.json();
 
     return NextResponse.json({ cardUrl: trelloCard.shortUrl });
   } catch (error) {
-    console.error('Error creating Trello card:', error);
+    console.error("Error creating Trello card:", error);
     return NextResponse.json(
-      { error: 'Failed to create Trello card' },
-      { status: 500 }
+      { error: "Failed to create Trello card" },
+      { status: 500 },
     );
   }
-} 
+}
