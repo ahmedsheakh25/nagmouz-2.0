@@ -1,23 +1,21 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { BriefsTable } from './briefs-table';
 
-export default function BriefsPage() {
+export default async function BriefsPage() {
+  const supabase = createServerComponentClient({ cookies });
+  
+  const { data: briefs } = await supabase
+    .from('briefs')
+    .select('*')
+    .order('created_at', { ascending: false });
+
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Briefs</h2>
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold tracking-tight">Project Briefs</h1>
       </div>
-      <div className="grid gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Project Briefs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-muted-foreground">
-              No briefs found. Project briefs will appear here once created.
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <BriefsTable briefs={briefs || []} />
     </div>
   );
 }
