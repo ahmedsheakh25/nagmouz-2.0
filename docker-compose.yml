@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  orbit:
+    build:
+      context: .
+      target: deps
+    command: pnpm --filter orbit dev
+    ports:
+      - "${ORBIT_PORT:-3000}:${ORBIT_PORT:-3000}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/orbit/node_modules
+    env_file:
+      - ./env.template
+    environment:
+      - NODE_ENV=development
+      - PORT=${ORBIT_PORT:-3000}
+
+  nujmooz:
+    build:
+      context: .
+      target: deps
+    command: pnpm --filter nujmooz dev
+    ports:
+      - "${NUJMOOZ_PORT:-3001}:${NUJMOOZ_PORT:-3001}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/nujmooz/node_modules
+    env_file:
+      - ./env.template
+    environment:
+      - NODE_ENV=development
+      - PORT=${NUJMOOZ_PORT:-3001}
+
+volumes:
+  db-data: 
