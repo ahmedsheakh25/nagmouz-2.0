@@ -53,32 +53,43 @@ nagmouz-2.0/
 
 ### Environment Setup
 
-1. Create `.env` files in both app directories:
+1. Create `.env` files in both app directories by copying the template:
    ```bash
-   # apps/nujmooz/.env
-   # apps/orbit/.env
+   # For Nujmooz
+   cd apps/nujmooz
+   cp env.local.template .env
+
+   # For Orbit
+   cd apps/orbit
+   cp env.local.template .env
+   ```
+
+2. Update the `.env` files with your actual Supabase credentials:
+   ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-2. Install dependencies:
+   ⚠️ **IMPORTANT**: 
+   - Never commit `.env` files to Git
+   - Keep your Supabase credentials secure
+   - The `.env` files are already in `.gitignore`
+
+3. Install dependencies:
    ```bash
    pnpm install
    ```
 
-3. Start development servers:
-
-   For Nujmooz:
+4. Start development servers:
    ```bash
+   # For Nujmooz
    cd apps/nujmooz && pnpm dev
-   ```
 
-   For Orbit:
-   ```bash
+   # For Orbit
    cd apps/orbit && pnpm dev
    ```
 
-4. Test Supabase connection:
+5. Test Supabase connection:
    - Nujmooz: Visit http://localhost:3000/test
    - Orbit: Visit http://localhost:3001/test
 
@@ -93,9 +104,17 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
+⚠️ **IMPORTANT**: 
+- Never expose these values in your code
+- Always set environment variables through the Vercel Dashboard
+- Use different Supabase projects/keys for development and production
+
 ### Testing Supabase Connection
 
-After deployment, visit `/test` route on both apps to verify Supabase connection is working correctly.
+After deployment, visit `/test` route on both apps to verify:
+- ✅ Supabase connection is working
+- 🔐 Environment variables are secure
+- 📊 Data is being fetched correctly
 
 ## 🌐 Deployment
 
