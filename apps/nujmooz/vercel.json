@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm run build",
+  "buildCommand": "cd ../.. && pnpm build --filter=nujmooz...",
   "devCommand": "pnpm run dev",
-  "installCommand": "pnpm install",
+  "installCommand": "cd ../.. && pnpm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "regions": ["dxb1"],
@@ -13,5 +13,16 @@
     "OPENAI_API_KEY": "@openai_api_key",
     "ELEVENLABS_API_KEY": "@elevenlabs_api_key",
     "ELEVENLABS_VOICE_ID": "@elevenlabs_voice_id"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "development": true,
+      "production": true
+    }
+  },
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+  "crons": {
+    "cleanup": "0 0 * * *"
   }
 } 

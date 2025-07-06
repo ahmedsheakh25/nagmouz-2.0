@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm run build",
+  "buildCommand": "cd ../.. && pnpm build --filter=orbit...",
   "devCommand": "pnpm run dev",
-  "installCommand": "pnpm install",
+  "installCommand": "cd ../.. && pnpm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "regions": ["dxb1"],
@@ -14,5 +14,16 @@
     "TRELLO_TOKEN": "@trello_token",
     "TRELLO_BOARD_ID": "@trello_board_id",
     "TRELLO_LIST_ID": "@trello_list_id"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "development": true,
+      "production": true
+    }
+  },
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+  "crons": {
+    "analytics": "0 0 * * *"
   }
 } 
