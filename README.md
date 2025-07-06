@@ -1,89 +1,138 @@
-# Nagmouz 2.0 🎨
+# Nagmouz 2.0
 
-An AI-powered creative assistant built for a Gulf region studio, featuring voice interaction and team management capabilities.
-
-## 🏗 Project Structure
-
-```bash
-apps/
-  nujmooz/     # AI Assistant UI (voice-enabled)
-  orbit/       # Admin Dashboard (team tools)
-
-packages/
-  ui/          # Shared UI components and config
-
-supabase/
-  schema.sql   # Database schema
-```
+A monorepo containing two applications:
+1. **Nujmooz** - A voice-interactive AI chat assistant
+2. **Orbit** - An admin dashboard for team operations
 
 ## 🚀 Features
 
-- **nujmooz**: Voice-interactive AI chat assistant
-  - Assistant UI SDK integration
-  - Voice input/output with Whisper & ElevenLabs
-  - Creative brief generation
-  - Multi-modal interactions
+### Nujmooz
+- Voice-based interaction with AI assistant
+- Real-time transcription using Whisper
+- Natural responses with ElevenLabs text-to-speech
+- Project brief generation
+- PDF export functionality
+- Trello integration for project management
 
-- **orbit**: Admin dashboard for team operations
-  - Built with Shadcn UI
-  - Project tracking & analytics
-  - Team collaboration tools
-  - Client management
+### Orbit
+- Project management dashboard
+- Client relationship management
+- Brief tracking and management
+- Team feedback system
+- Analytics and reporting
+- Dark mode support
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
-- **Database**: Supabase (PostgreSQL)
-- **AI/ML**: OpenAI GPT-4 (chat, vision, embeddings)
-- **Voice**: Whisper + ElevenLabs
-- **Email**: Resend
-- **Project Management**: Trello API
-- **Deployment**: Vercel
+- Next.js 14 with App Router
+- TypeScript
+- Tailwind CSS
+- Supabase for:
+  - Authentication
+  - Database
+  - Storage
+  - Real-time subscriptions
+- OpenAI GPT-4 & Whisper
+- ElevenLabs Text-to-Speech
+- Trello API integration
+- PWA support
 
-## 🌐 Domains
+## 📦 Project Structure
 
-- `nujmooz.ofspace.studio` - Public assistant interface
-- `orbit.ofspace.studio` - Team dashboard
-- `www.ofspace.studio` - Landing page
+```
+nagmouz-2.0/
+├── apps/
+│   ├── nujmooz/          # Voice assistant app
+│   └── orbit/            # Admin dashboard
+├── packages/
+│   └── ui/              # Shared UI components
+└── supabase/            # Database schema and migrations
+```
 
-## 📦 Installation
+## 🏗️ Setup
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-org/nagmouz-2.0.git
-   cd nagmouz-2.0
-   ```
+```bash
+git clone https://github.com/your-username/nagmouz-2.0.git
+cd nagmouz-2.0
+```
 
 2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
+```bash
+pnpm install
+```
 
-3. Copy the environment template:
-   ```bash
-   cp env.template .env
-   ```
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
 
-4. Fill in your environment variables in `.env`
+4. Fill in the required environment variables:
+- Supabase configuration
+- OpenAI API key
+- ElevenLabs API key
+- Trello credentials
 
 5. Start the development server:
-   ```bash
-   pnpm dev
-   ```
+```bash
+pnpm dev
+```
 
-## 📱 Mobile Strategy
+## 🌐 Deployment
 
-The project is built with a mobile-first approach and supports:
-- PWA installation on mobile devices
-- Future React Native with Expo compatibility
-- Shared business logic and API layer
+The project is configured for deployment on Vercel:
 
-## 🤝 Contributing
+1. Create two new projects on Vercel:
+   - `nujmooz.ofspace.studio` for the voice assistant
+   - `orbit.ofspace.studio` for the admin dashboard
 
-1. Create a feature branch
-2. Make your changes
-3. Submit a pull request
+2. Configure environment variables in Vercel:
+   - Add all required API keys and credentials
+   - Set up domain configuration
+
+3. Deploy:
+```bash
+vercel --prod
+```
+
+## 🔑 Environment Variables
+
+Required environment variables:
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# OpenAI
+OPENAI_API_KEY=your_openai_api_key
+
+# ElevenLabs
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
+ELEVENLABS_VOICE_ID=your_voice_id
+
+# Trello
+TRELLO_KEY=your_trello_key
+TRELLO_TOKEN=your_trello_token
+TRELLO_BOARD_ID=your_board_id
+TRELLO_LIST_ID=your_list_id
+```
+
+## 📱 PWA Support
+
+Both applications are configured as Progressive Web Apps:
+- Installable on mobile devices
+- Offline support
+- Push notifications (coming soon)
+
+## 🧪 Testing
+
+Run tests:
+```bash
+pnpm test
+```
 
 ## 📄 License
 
-Copyright © 2024 OfSpace Studio. All rights reserved. 
+MIT License - see LICENSE file for details 

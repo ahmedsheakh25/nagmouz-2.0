@@ -2,6 +2,8 @@ import { Card } from '@nagmouz/ui';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, Send } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 interface Brief {
   id: string;
@@ -10,6 +12,13 @@ interface Brief {
   submittedAt: string;
   status: string;
   summary: string;
+  client: {
+    name: string;
+    email: string;
+    company: string;
+  };
+  answers: Record<string, string>;
+  createdAt: string;
 }
 
 interface BriefCardProps {
@@ -24,13 +33,82 @@ const statusColors = {
 };
 
 export function BriefCard({ brief }: BriefCardProps) {
+  const [loading, setLoading] = useState(false);
+  const [sendingToTrello, setSendingToTrello] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: brief.projectTitle,
+          answers: brief.answers,
+          clientInfo: brief.client,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to generate PDF');
+
+      const { url } = await response.json();
+      window.open(url, '_blank');
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to generate PDF. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendToTrello = async () => {
+    try {
+      setSendingToTrello(true);
+      const response = await fetch('/api/send-to-trello', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: brief.projectTitle,
+          answers: brief.answers,
+          clientInfo: brief.client,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to create Trello card');
+
+      const { cardUrl } = await response.json();
+      toast({
+        title: 'Success',
+        description: 'Brief sent to Trello successfully!',
+      });
+      window.open(cardUrl, '_blank');
+    } catch (error) {
+      console.error('Error sending to Trello:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send to Trello. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setSendingToTrello(false);
+    }
+  };
+
   return (
     <Card>
       <div className="p-6 space-y-4">
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-semibold">{brief.projectTitle}</h3>
-            <p className="text-sm text-muted-foreground">{brief.clientName}</p>
+            <p className="text-sm text-muted-foreground">{brief.client.company}</p>
           </div>
           <Badge
             variant="secondary"
@@ -51,13 +129,31 @@ export function BriefCard({ brief }: BriefCardProps) {
             <FileText className="h-4 w-4 mr-2" />
             View
           </Button>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Download PDF
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDownloadPDF}
+            disabled={loading}
+          >
+            {loading ? 'Generating...' : (
+              <>
+                <Download className="h-4 w-4 mr-2" />
+                Download PDF
+              </>
+            )}
           </Button>
-          <Button variant="outline" size="sm">
-            <Send className="h-4 w-4 mr-2" />
-            Send to Trello
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleSendToTrello}
+            disabled={sendingToTrello}
+          >
+            {sendingToTrello ? 'Sending...' : (
+              <>
+                <Send className="h-4 w-4 mr-2" />
+                Send to Trello
+              </>
+            )}
           </Button>
         </div>
       </div>
