@@ -2,57 +2,44 @@ import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+const PUBLIC_PATHS = ['/login', '/register', '/auth/callback'];
+const STATIC_ASSETS = ['/icons/', '/images/', '/_next/', '/favicon.ico', '/manifest.json'];
+
+export async function middleware(req: NextRequest) {
   try {
-    // Skip middleware for static files and API routes
-    if (
-      request.nextUrl.pathname.startsWith('/_next') ||
-      request.nextUrl.pathname.startsWith('/api') ||
-      request.nextUrl.pathname.startsWith('/static') ||
-      request.nextUrl.pathname === '/favicon.ico' ||
-      request.nextUrl.pathname.includes('.') // Skip files with extensions
-    ) {
+    // Check if the request is for static assets
+    if (STATIC_ASSETS.some(path => req.nextUrl.pathname.startsWith(path))) {
       return NextResponse.next();
     }
 
     const res = NextResponse.next();
-    const supabase = createMiddlewareClient({ req: request, res });
+    const supabase = createMiddlewareClient({ req, res });
     
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+    // Refresh session if expired
+    const { data: { session }, error } = await supabase.auth.getSession();
 
-    // Public routes that don't require authentication
-    const publicRoutes = ["/login", "/register"];
-    const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname);
-
-    if (!session && !isPublicRoute) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    // Allow access to public paths
+    if (PUBLIC_PATHS.includes(req.nextUrl.pathname)) {
+      if (session) {
+        // If logged in, redirect to dashboard from public paths
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+      }
+      return res;
     }
 
-    if (session && isPublicRoute) {
-      return NextResponse.redirect(new URL("/", request.url));
+    // Protected routes - redirect to login if no session
+    if (!session) {
+      return NextResponse.redirect(new URL('/login', req.url));
     }
 
     return res;
   } catch (error) {
-    // If there's an error, allow the request to continue
     console.error('Middleware error:', error);
+    // On error, allow request to continue but don't modify response
     return NextResponse.next();
   }
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next (Next.js files)
-     * - static (static files)
-     * - favicon.ico (favicon file)
-     * - public (public files)
-     * Also exclude all files with extensions
-     */
-    "/((?!api|_next|static|favicon\\.ico|public|\\.).)*",
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
 };
