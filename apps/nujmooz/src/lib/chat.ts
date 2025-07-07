@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { Message } from "@/types";
+import { Message, ChatRole } from "@/types";
 
 interface ChatResponse {
   message: string;
@@ -28,7 +28,7 @@ export class ChatService {
         messages: [
           { role: "system", content: this.context },
           ...messages.map((msg) => ({
-            role: msg.role as OpenAI.ChatCompletionRole,
+            role: msg.role,
             content: msg.content,
           })),
         ],

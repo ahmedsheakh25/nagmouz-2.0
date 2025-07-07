@@ -13,10 +13,12 @@ services:
       - /app/node_modules
       - /app/apps/orbit/node_modules
     env_file:
-      - ./env.template
+      - .env.docker
     environment:
-      - NODE_ENV=development
+      - NEXT_PUBLIC_APP_URL=http://localhost:${ORBIT_PORT:-3000}
       - PORT=${ORBIT_PORT:-3000}
+    depends_on:
+      - supabase
 
   nujmooz:
     build:
@@ -30,10 +32,36 @@ services:
       - /app/node_modules
       - /app/apps/nujmooz/node_modules
     env_file:
-      - ./env.template
+      - .env.docker
     environment:
-      - NODE_ENV=development
+      - NEXT_PUBLIC_APP_URL=http://localhost:${NUJMOOZ_PORT:-3001}
       - PORT=${NUJMOOZ_PORT:-3001}
+    depends_on:
+      - supabase
+
+  supabase:
+    image: supabase/supabase-local
+    ports:
+      - "54321:54321"  # REST API
+      - "54322:54322"  # Database
+      - "54323:54323"  # Studio
+      - "54324:54324"  # Inbucket
+    volumes:
+      - ./supabase/config.toml:/etc/supabase/config.toml
+      - ./supabase/migrations:/supabase/migrations
+      - ./supabase/seed.sql:/supabase/seed.sql
+      - supabase-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      DASHBOARD_USERNAME: ${DASHBOARD_USERNAME}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD}
+      SUPABASE_AUTH_JWT_SECRET: ${JWT_SECRET}
+      SUPABASE_URL: http://localhost:54321
+      SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@localhost:54322/postgres
 
 volumes:
+  supabase-data:
   db-data: 

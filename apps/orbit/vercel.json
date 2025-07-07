@@ -10,10 +10,10 @@
     "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key",
     "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
-    "TRELLO_KEY": "@trello_key",
-    "TRELLO_TOKEN": "@trello_token",
-    "TRELLO_BOARD_ID": "@trello_board_id",
-    "TRELLO_LIST_ID": "@trello_list_id"
+    "NODE_ENV": "production",
+    "NEXT_PUBLIC_APP_URL": "@next_public_app_url",
+    "NEXT_PUBLIC_ORBIT_DOMAIN": "@next_public_orbit_domain",
+    "DATABASE_URL": "@database_url"
   },
   "git": {
     "deploymentEnabled": {

@@ -12,7 +12,11 @@
     "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
     "OPENAI_API_KEY": "@openai_api_key",
     "ELEVENLABS_API_KEY": "@elevenlabs_api_key",
-    "ELEVENLABS_VOICE_ID": "@elevenlabs_voice_id"
+    "ELEVENLABS_VOICE_ID": "@elevenlabs_voice_id",
+    "NODE_ENV": "production",
+    "NEXT_PUBLIC_APP_URL": "@next_public_app_url",
+    "NEXT_PUBLIC_NUJMOOZ_DOMAIN": "@next_public_nujmooz_domain",
+    "DATABASE_URL": "@database_url"
   },
   "git": {
     "deploymentEnabled": {
