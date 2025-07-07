@@ -13,7 +13,16 @@
     "orbit:build": "pnpm --filter orbit build",
     "nujmooz:build": "pnpm --filter nujmooz build",
     "test": "turbo run test",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepare:cloud": "bash scripts/prepare-cloud-supabase.sh",
+    "migrate:schema": "bash scripts/migrate-schema.sh",
+    "migrate:data": "bash scripts/migrate-data.sh",
+    "setup:vercel": "bash scripts/setup-vercel-env.sh",
+    "verify:migration": "bash scripts/verify-migration.sh",
+    "migrate:complete": "bash scripts/complete-migration.sh",
+    "deploy:orbit": "bash scripts/deploy-orbit-vercel.sh",
+    "deploy:nujmooz": "bash scripts/deploy-nujmooz-vercel.sh",
+    "deploy:all": "pnpm run deploy:orbit && pnpm run deploy:nujmooz"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
