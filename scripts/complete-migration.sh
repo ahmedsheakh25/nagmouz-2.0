@@ -10,13 +10,63 @@ NC='\033[0m'
 
 echo "🚀 Starting Complete Migration Process..."
 
+# Function to validate environment variables
+validate_environment() {
+    local required_vars=(
+        "SUPABASE_PROJECT_ID"
+        "SUPABASE_ACCESS_TOKEN"
+        "SUPABASE_DB_URL"
+        "LOCAL_DB_URL"
+        "SUPABASE_SERVICE_ROLE_KEY"
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    )
+
+    local missing_vars=()
+    for var in "${required_vars[@]}"; do
+        if [ -z "${!var}" ]; then
+            missing_vars+=("$var")
+        fi
+    done
+
+    if [ ${#missing_vars[@]} -ne 0 ]; then
+        echo -e "${RED}Error: The following required environment variables are not set:${NC}"
+        printf '%s\n' "${missing_vars[@]}"
+        exit 1
+    fi
+}
+
+# Function to retry commands
+retry_command() {
+    local cmd="$1"
+    local max_attempts=3
+    local attempt=1
+    local delay=5
+
+    while [ $attempt -le $max_attempts ]; do
+        echo "Attempt $attempt of $max_attempts: $cmd"
+        if eval "$cmd"; then
+            return 0
+        fi
+        
+        attempt=$((attempt + 1))
+        if [ $attempt -le $max_attempts ]; then
+            echo "Command failed, retrying in $delay seconds..."
+            sleep $delay
+            delay=$((delay * 2))
+        fi
+    done
+
+    echo -e "${RED}Command failed after $max_attempts attempts${NC}"
+    return 1
+}
+
 # Function to run a step and check its result
 run_step() {
     local step_name=$1
     local script_path=$2
     
     echo -e "\n${YELLOW}Running step: $step_name${NC}"
-    if bash "$script_path"; then
+    if retry_command "bash $script_path"; then
         echo -e "${GREEN}✅ $step_name completed successfully${NC}"
         return 0
     else
@@ -24,6 +74,9 @@ run_step() {
         return 1
     fi
 }
+
+# Validate environment before starting
+validate_environment
 
 # Check if all required scripts exist
 REQUIRED_SCRIPTS=(
@@ -47,6 +100,18 @@ chmod +x scripts/*.sh
 # Create migration log directory
 LOG_DIR="migrations/logs/$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$LOG_DIR"
+
+# Test database connections before starting
+echo "Testing database connections..."
+if ! retry_command "psql \"$LOCAL_DB_URL\" -c '\q'"; then
+    echo -e "${RED}Error: Cannot connect to local database${NC}"
+    exit 1
+fi
+
+if ! retry_command "psql \"$SUPABASE_DB_URL\" -c '\q'"; then
+    echo -e "${RED}Error: Cannot connect to cloud database${NC}"
+    exit 1
+fi
 
 # Start migration process
 {
