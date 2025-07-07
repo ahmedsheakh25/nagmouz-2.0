@@ -23,7 +23,10 @@
     }
   },
   "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
-  "crons": {
-    "analytics": "0 0 * * *"
-  }
+  "crons": [
+    {
+      "path": "/api/cron/analytics",
+      "schedule": "0 0 * * *"
+    }
+  ]
 } 
